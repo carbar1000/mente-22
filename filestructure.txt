@@ -1,3 +1,4 @@
+|-- .gitattributes
 |-- .gitignore
 |-- form-handler.js
 |-- index.html
@@ -5,6 +6,7 @@
 |-- pages
     |-- api
         |-- supabase-credentials.js
+|-- README.md
 |-- supabase-config.js
 |-- v0-user-next.config.js
 |-- webform-mente-navigate.js
