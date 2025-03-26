@@ -1,7 +1,10 @@
 |-- .gitattributes
 |-- .gitignore
+|-- api
+    |-- credentials.js
 |-- form-handler.js
 |-- index.html
+|-- obrigado.html
 |-- package.json
 |-- pages
     |-- api
@@ -9,6 +12,7 @@
 |-- README.md
 |-- supabase-config.js
 |-- v0-user-next.config.js
+|-- vercel.json
 |-- webform-mente-navigate.js
 |-- webform-mente.css
 |-- webform-mente.js

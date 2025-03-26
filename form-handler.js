@@ -37,11 +37,17 @@ async function submitToSupabase(data) {
       throw new Error("Cliente Supabase não inicializado")
     }
 
+    console.log("Enviando dados para a tabela respostas:", data)
+
     // Send data to the "respostas" table
     const { data: insertedData, error } = await supabase.from("respostas").insert([data])
 
-    if (error) throw error
+    if (error) {
+      console.error("Erro do Supabase:", error)
+      throw error
+    }
 
+    console.log("Dados inseridos com sucesso:", insertedData)
     return { success: true, data: insertedData }
   } catch (error) {
     console.error("Error submitting to Supabase:", error)
@@ -67,7 +73,7 @@ async function handleFormSubmit(event) {
     const formData = collectFormData(form)
 
     // Log the data being sent (for debugging)
-    console.log("Sending data to Supabase:", formData)
+    console.log("Preparando para enviar dados:", formData)
 
     // Submit to Supabase
     const result = await submitToSupabase(formData)
@@ -76,27 +82,23 @@ async function handleFormSubmit(event) {
       showFlashMessage("Formulário enviado com sucesso!", "success")
       form.reset()
 
-      // Redirect to a thank you page or show a success message
+      // Redirect to thank you page
       setTimeout(() => {
-        // You can replace this with a redirect if needed
-        document.getElementById("myForm").classList.add("hidden")
-
-        // Create and show a success message
-        const successDiv = document.createElement("div")
-        successDiv.className = "centered-text"
-        successDiv.innerHTML = `
-          <h1>Obrigado pela sua participação!</h1>
-          <h3>Seus resultados foram registrados com sucesso.</h3>
-        `
-        document.body.appendChild(successDiv)
+        window.location.href = "obrigado.html"
       }, 1000)
     } else {
       showFlashMessage(`Erro ao enviar formulário: ${result.error}`, "error")
+
+      // Re-enable submit button
+      if (submitButton) {
+        submitButton.disabled = false
+        submitButton.textContent = "Enviar formulário"
+      }
     }
   } catch (error) {
     console.error("Form submission error:", error)
     showFlashMessage("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.", "error")
-  } finally {
+
     // Re-enable submit button
     if (submitButton) {
       submitButton.disabled = false

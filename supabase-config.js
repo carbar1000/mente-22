@@ -10,7 +10,7 @@ let supabase = null
 async function initSupabase() {
   try {
     // Buscar credenciais da API
-    const response = await fetch("/api/supabase-credentials")
+    const response = await fetch("/api/credentials")
     if (!response.ok) {
       throw new Error("Falha ao buscar credenciais do Supabase")
     }
@@ -19,11 +19,13 @@ async function initSupabase() {
     supabaseUrl = credentials.supabaseUrl
     supabaseAnonKey = credentials.supabaseAnonKey
 
+    console.log("Credenciais obtidas com sucesso")
+
     // Criar cliente Supabase
     supabase = createClient(supabaseUrl, supabaseAnonKey)
 
     // Adicionar indicador de status
-    addStatusIndicator()
+    addStatusIndicator(true)
 
     return supabase
   } catch (error) {
@@ -61,7 +63,7 @@ function addStatusIndicator(isConnected = true) {
 }
 
 // Inicializar Supabase quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", initSupabase)
+let initPromise = null
 
 // Função para obter o cliente Supabase
 export async function getSupabase() {
@@ -69,8 +71,15 @@ export async function getSupabase() {
     return supabase
   }
 
-  return await initSupabase()
+  if (!initPromise) {
+    initPromise = initSupabase()
+  }
+
+  return await initPromise
 }
+
+// Inicializar quando o DOM estiver carregado
+document.addEventListener("DOMContentLoaded", getSupabase)
 
 // Exportar função para obter o cliente Supabase
 export default getSupabase

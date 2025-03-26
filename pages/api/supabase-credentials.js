@@ -8,8 +8,8 @@ export default function handler(req, res) {
   // Retornar apenas a URL pública e a chave anônima
   // Estas são seguras para uso no cliente, mas ainda assim é melhor não hardcoding
   res.status(200).json({
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
   })
 }
 
